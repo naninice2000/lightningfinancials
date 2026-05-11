@@ -178,13 +178,29 @@
             e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
         });
 
-        // Form Submission
-        assessmentForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            // In reality, here you'd send the data to Formspree/Firebase
-            portalModal.classList.add('hidden');
-            thankYouModal.classList.remove('hidden');
-        });
+         // Replace the old submission logic with this:
+const scriptURL = 'PASTE_YOUR_GOOGLE_WEB_APP_URL_HERE'; // <--- Paste your URL here
+
+assessmentForm.addEventListener('submit', e => {
+  e.preventDefault();
+  
+  // Show a "Loading" state on the button
+  const submitBtn = assessmentForm.querySelector('button[type="submit"]');
+  submitBtn.innerText = "Processing...";
+  submitBtn.disabled = true;
+
+  fetch(scriptURL, { method: 'POST', body: new FormData(assessmentForm)})
+    .then(response => {
+        portalModal.classList.add('hidden');
+        thankYouModal.classList.remove('hidden');
+        submitBtn.innerText = "Submit Assessment";
+        submitBtn.disabled = false;
+    })
+    .catch(error => {
+        alert('Error!', error.message);
+        submitBtn.disabled = false;
+    });
+});
 
         function resetAll() {
             thankYouModal.classList.add('hidden');
