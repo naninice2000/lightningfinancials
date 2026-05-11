@@ -1,227 +1,198 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lightning Financials | Expert Financial Planning</title>
+    <title>Lightning Financials | Bespoke Planning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --navy: #0a192f;
-            --gold: #ffcc00;
-            --white: #ffffff;
-            --grey: #f4f4f4;
-            --text: #333333;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            line-height: 1.6;
-            color: var(--text);
-            background-color: var(--white);
-        }
-
-        header {
-            background: var(--navy);
-            color: var(--white);
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--gold);
-        }
-
-        nav a {
-            color: var(--white);
-            text-decoration: none;
-            margin-left: 20px;
-            font-weight: 500;
-        }
-
-        .hero {
-            background: linear-gradient(rgba(10, 25, 47, 0.8), rgba(10, 25, 47, 0.8)), url('https://images.unsplash.com/photo-1454165833767-027ffea9e77b?auto=format&fit=crop&q=80&w=1000');
-            background-size: cover;
-            background-position: center;
-            height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: var(--white);
-            padding: 0 20px;
-        }
-
-        .hero h1 { font-size: 3rem; margin-bottom: 1rem; }
-        .hero p { font-size: 1.2rem; max-width: 700px; margin-bottom: 2rem; }
-
-        .btn {
-            background: var(--gold);
-            color: var(--navy);
-            padding: 12px 30px;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 5px;
-            transition: transform 0.3s;
-        }
-
-        .btn:hover { transform: scale(1.05); }
-
-        .section { padding: 60px 10%; }
-        .section-title { text-align: center; margin-bottom: 40px; }
-        .section-title h2 { font-size: 2rem; color: var(--navy); }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .service-card {
-            background: var(--grey);
-            padding: 30px;
-            border-radius: 10px;
-            border-left: 5px solid var(--gold);
-            transition: 0.3s;
-        }
-
-        .service-card:hover { box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-
-        .portal-section {
-            background: var(--navy);
-            color: var(--white);
-            text-align: center;
-        }
-
-        #login-container {
-            margin-top: 20px;
-            padding: 40px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            display: inline-block;
-        }
-
-        form {
-            max-width: 600px;
-            margin: 0 auto;
-            display: grid;
-            gap: 15px;
-        }
-
-        input, select, textarea {
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            width: 100%;
-        }
-
-        footer {
-            background: #050c16;
-            color: #999;
-            text-align: center;
-            padding: 20px;
-            font-size: 0.9rem;
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; scroll-behavior: smooth; }
+        h1, h2, .playfair { font-family: 'Playfair Display', serif; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .gold-gradient { background: linear-gradient(135deg, #d4af37 0%, #f9e076 50%, #b8860b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .btn-gold { background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%); transition: all 0.3s ease; }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(184, 134, 11, 0.3); }
+        input, select, textarea { background: rgba(255, 255, 255, 0.05) !important; border: 1px solid rgba(255, 255, 255, 0.1) !important; color: white !important; }
+        .modal-overlay { background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px); }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="logo">LIGHTNING FINANCIALS</div>
-    <nav>
-        <a href="#services">Services</a>
-        <a href="#portal">Client Portal</a>
-        <a href="#contact">Contact</a>
+    <!-- Header -->
+    <nav class="fixed w-full z-50 glass py-4 px-8 flex justify-between items-center">
+        <div class="text-2xl font-bold tracking-tighter gold-gradient">LIGHTNING</div>
+        <div class="space-x-8 text-sm uppercase tracking-widest hidden md:flex">
+            <a href="#home" class="hover:text-amber-400 transition">Home</a>
+            <a href="#services" class="hover:text-amber-400 transition">Solutions</a>
+            <button onclick="openPortal()" class="text-amber-200 border border-amber-200/30 px-4 py-1 rounded-full hover:bg-amber-200/10 transition">Client Login</button>
+        </div>
     </nav>
-</header>
 
-<section class="hero">
-    <h1>Protecting Your Legacy. Powering Your Future.</h1>
-    <p>Comprehensive financial planning, insurance, and retirement solutions tailored for your unique journey.</p>
-    <a href="#contact" class="btn">Get Started</a>
-</section>
+    <!-- Hero Section -->
+    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2000" class="absolute inset-0 w-full h-full object-cover opacity-30 scale-105" alt="Office Building">
+        <div class="relative z-10 text-center px-4">
+            <h1 class="text-5xl md:text-7xl mb-6 leading-tight">Preserving Wealth.<br><span class="gold-gradient">Designing Legacies.</span></h1>
+            <p class="text-slate-400 max-w-xl mx-auto mb-10 text-lg font-light tracking-wide">Elite financial planning for those who demand excellence in protection, growth, and retirement strategy.</p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <a href="#services" class="btn-gold text-slate-900 px-8 py-4 rounded-lg font-semibold uppercase tracking-wider">Explore Services</a>
+                <button onclick="openPortal()" class="bg-white/5 border border-white/10 backdrop-blur-md px-8 py-4 rounded-lg font-semibold uppercase tracking-wider hover:bg-white/10 transition">Initial Assessment</button>
+            </div>
+        </div>
+    </section>
 
-<section id="services" class="section">
-    <div class="section-title">
-        <h2>Our Core Services</h2>
+    <!-- Services -->
+    <section id="services" class="py-24 px-8 max-w-7xl mx-auto">
+        <h2 class="text-4xl text-center mb-16">The Lightning <span class="gold-gradient">Standard</span></h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="glass p-10 rounded-2xl group hover:border-amber-400/50 transition duration-500">
+                <div class="w-12 h-12 bg-amber-400/10 rounded-lg flex items-center justify-center mb-6 text-amber-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-4">Risk Management</h3>
+                <p class="text-slate-400 font-light">Custom life and medical insurance architectures built to shield your family's future from the unpredictable.</p>
+            </div>
+            <div class="glass p-10 rounded-2xl group hover:border-amber-400/50 transition duration-500">
+                <div class="w-12 h-12 bg-amber-400/10 rounded-lg flex items-center justify-center mb-6 text-amber-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-4">Strategic Planning</h3>
+                <p class="text-slate-400 font-light">From elite educational funding to stress-free retirement pathways, we map every milestone with precision.</p>
+            </div>
+            <div class="glass p-10 rounded-2xl group hover:border-amber-400/50 transition duration-500">
+                <div class="w-12 h-12 bg-amber-400/10 rounded-lg flex items-center justify-center mb-6 text-amber-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-4">Portfolio Analysis</h3>
+                <p class="text-slate-400 font-light">Deep-tissue analysis of your current holdings to identify hidden risks and untapped opportunities for growth.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Assessment Modal -->
+    <div id="portalModal" class="fixed inset-0 z-[100] modal-overlay hidden flex items-center justify-center p-4">
+        <div class="glass max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-3xl p-8 md:p-12 relative">
+            <button onclick="closePortal()" class="absolute top-6 right-6 text-slate-400 hover:text-white">&times; Close</button>
+            
+            <div id="loginStep">
+                <h2 class="text-3xl mb-4 gold-gradient">Client Access</h2>
+                <p class="text-slate-400 mb-8">Securely verify your identity via Google to proceed to the initial assessment.</p>
+                <button onclick="simulateGoogleLogin()" class="w-full flex items-center justify-center gap-4 bg-white text-slate-900 py-4 rounded-xl font-bold hover:bg-slate-200 transition">
+                    <img src="https://www.google.com/favicon.ico" class="w-5" alt="Google">
+                    Continue with Google
+                </button>
+            </div>
+
+            <form id="assessmentForm" class="hidden space-y-6" action="https://formspree.io/f/YOUR_ID_HERE" method="POST">
+                <h2 class="text-3xl mb-2 gold-gradient">Initial Assessment</h2>
+                <p class="text-slate-400 mb-8 text-sm">Please provide accurate financial snapshots for a more precise strategy.</p>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs uppercase tracking-widest text-slate-500 mb-2">Full Name</label>
+                        <input type="text" name="name" required class="w-full rounded-lg px-4 py-3 focus:ring-1 focus:ring-amber-400 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase tracking-widest text-slate-500 mb-2">Phone Number</label>
+                        <input type="tel" name="phone" id="phone" placeholder="(123) 456-7890" pattern="[0-9]{10}" title="Please enter 10 digits" required class="w-full rounded-lg px-4 py-3 focus:ring-1 focus:ring-amber-400 outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase tracking-widest text-slate-500 mb-2">Verified Gmail</label>
+                    <input type="email" name="email" id="userEmail" readonly class="w-full rounded-lg px-4 py-3 opacity-60 cursor-not-allowed">
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs uppercase tracking-widest text-slate-500 mb-2">Net Assets</label>
+                        <input type="number" name="assets" placeholder="$" required class="w-full rounded-lg px-4 py-3 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase tracking-widest text-slate-500 mb-2">Net Liabilities</label>
+                        <input type="number" name="liabilities" placeholder="$" required class="w-full rounded-lg px-4 py-3 outline-none">
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <label class="block text-xs uppercase tracking-widest text-slate-500">Life Insurance Coverage</label>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <input type="number" name="employer_coverage" placeholder="Employer-based ($)" class="w-full rounded-lg px-4 py-3 outline-none">
+                        <input type="number" name="private_coverage" placeholder="Private/Term ($)" class="w-full rounded-lg px-4 py-3 outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase tracking-widest text-slate-500 mb-2">Other Income Sources (Non-Salary)</label>
+                    <textarea name="other_income" rows="2" class="w-full rounded-lg px-4 py-3 outline-none"></textarea>
+                </div>
+
+                <button type="submit" class="w-full btn-gold text-slate-900 py-4 rounded-xl font-bold uppercase tracking-widest">Submit Assessment</button>
+            </form>
+        </div>
     </div>
-    <div class="services-grid">
-        <div class="service-card">
-            <h3>Life & Medical Insurance</h3>
-            <p>Strategic coverage options to protect your health and provide security for your family's future.</p>
-        </div>
-        <div class="service-card">
-            <h3>Retirement Solutions</h3>
-            <p>Expert guidance on 401(k) rollovers, annuities, and sustainable income planning.</p>
-        </div>
-        <div class="service-card">
-            <h3>Education Planning</h3>
-            <p>Ensure your children's dreams are funded with optimized savings and investment strategies.</p>
-        </div>
-        <div class="service-card">
-            <h3>Portfolio Analysis</h3>
-            <p>Data-driven reviews of your current assets to improve performance and manage risk.</p>
+
+    <!-- Thank You Modal -->
+    <div id="thankYouModal" class="fixed inset-0 z-[110] modal-overlay hidden flex items-center justify-center p-4">
+        <div class="glass max-w-md w-full rounded-3xl p-12 text-center">
+            <div class="w-20 h-20 bg-amber-400/20 rounded-full flex items-center justify-center mx-auto mb-6 text-amber-400 text-4xl">✓</div>
+            <h2 class="text-3xl mb-4 font-bold">Transmission Received</h2>
+            <p class="text-slate-400 mb-8 font-light">Thank you for your trust. A professional wealth planner will analyze your data and contact you within 24 hours.</p>
+            <button onclick="resetAll()" class="w-full bg-white text-slate-900 py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-slate-200 transition">Close & Return</button>
         </div>
     </div>
-</section>
 
-<section id="portal" class="section portal-section">
-    <h2>Secure Client Portal</h2>
-    <p>Log in with your Google account to access your personalized forms and documents.</p>
-    <div id="login-container">
-        <!-- In a real app, this button initiates the OAuth flow -->
-        <button id="google-login-btn" class="btn">Sign in with Google</button>
-        <div id="file-access" style="display:none; margin-top:20px;">
-            <p>Access Granted! Click below to view your forms.</p>
-            <a href="https://drive.google.com" target="_blank" class="btn" style="background:#fff;">Open Google Drive Folder</a>
-        </div>
-    </div>
-</section>
+    <footer class="py-12 border-t border-white/5 text-center text-slate-600 text-sm tracking-widest">
+        &copy; 2026 LIGHTNING FINANCIALS. ALL RIGHTS RESERVED.
+    </footer>
 
-<section id="contact" class="section">
-    <div class="section-title">
-        <h2>Request a Consultation</h2>
-    </div>
-    <form>
-        <input type="text" placeholder="Full Name" required>
-        <input type="email" placeholder="Email Address" required>
-        <select required>
-            <option value="">Select Service</option>
-            <option>Life Insurance</option>
-            <option>Retirement Planning</option>
-            <option>Portfolio Analysis</option>
-            <option>Other</option>
-        </select>
-        <textarea rows="5" placeholder="How can we help?"></textarea>
-        <button type="submit" class="btn" style="border:none; cursor:pointer;">Submit Request</button>
-    </form>
-</section>
+    <script>
+        const portalModal = document.getElementById('portalModal');
+        const assessmentForm = document.getElementById('assessmentForm');
+        const loginStep = document.getElementById('loginStep');
+        const thankYouModal = document.getElementById('thankYouModal');
 
-<footer>
-    &copy; 2024 Lightning Financials. All Rights Reserved.
-</footer>
+        function openPortal() {
+            portalModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
 
-<script>
-    // Simple simulation of Google Login for the prototype
-    const loginBtn = document.getElementById('google-login-btn');
-    const fileAccess = document.getElementById('file-access');
+        function closePortal() {
+            portalModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
 
-    loginBtn.addEventListener('click', () => {
-        // In production, you would use the Google Identity Services SDK here
-        alert('Connecting to Google Services...');
-        loginBtn.style.display = 'none';
-        fileAccess.style.display = 'block';
-    });
-</script>
+        function simulateGoogleLogin() {
+            // In a real app, this would use Google One Tap / OAuth
+            const mockEmail = "client.demo@gmail.com";
+            document.getElementById('userEmail').value = mockEmail;
+            loginStep.classList.add('hidden');
+            assessmentForm.classList.remove('hidden');
+        }
 
+        // Phone number validation logic
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+            e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+        });
+
+        // Form Submission
+        assessmentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // In reality, here you'd send the data to Formspree/Firebase
+            portalModal.classList.add('hidden');
+            thankYouModal.classList.remove('hidden');
+        });
+
+        function resetAll() {
+            thankYouModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            assessmentForm.reset();
+            loginStep.classList.remove('hidden');
+            assessmentForm.classList.add('hidden');
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+    </script>
 </body>
 </html>
