@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lightning Financials | Bespoke Planning</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght=700&family=Inter:wght=300;400;600&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; scroll-behavior: smooth; }
@@ -71,13 +72,12 @@
         <div class="glass max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-3xl p-8 md:p-12 relative">
             <button onclick="closePortal()" class="absolute top-6 right-6 text-slate-400 hover:text-white">&times; Close</button>
             
-            <div id="loginStep">
+            <div id="loginStep" class="text-center">
                 <h2 class="text-3xl mb-4 gold-gradient">Client Access</h2>
                 <p class="text-slate-400 mb-8">Securely verify your identity via Google to proceed to the initial assessment.</p>
-                <button onclick="simulateGoogleLogin()" class="w-full flex items-center justify-center gap-4 bg-white text-slate-900 py-4 rounded-xl font-bold hover:bg-slate-200 transition">
-                    <img src="https://www.google.com/favicon.ico" class="w-5" alt="Google">
-                    Continue with Google
-                </button>
+                <div class="flex justify-center">
+                    <div id="googleBtnTarget"></div>
+                </div>
             </div>
 
             <form id="assessmentForm" class="hidden space-y-6">
@@ -87,7 +87,7 @@
                 <div class="grid md:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-xs uppercase tracking-widest text-slate-500 mb-2">Full Name</label>
-                        <input type="text" name="name" required class="w-full rounded-lg px-4 py-3 focus:ring-1 focus:ring-amber-400 outline-none">
+                        <input type="text" name="name" id="userName" required class="w-full rounded-lg px-4 py-3 focus:ring-1 focus:ring-amber-400 outline-none">
                     </div>
                     <div>
                         <label class="block text-xs uppercase tracking-widest text-slate-500 mb-2">Phone Number</label>
@@ -147,10 +147,15 @@
         const assessmentForm = document.getElementById('assessmentForm');
         const loginStep = document.getElementById('loginStep');
         const thankYouModal = document.getElementById('thankYouModal');
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzZRyiIiZaAO8nFV3JNHtt0-J5jVhjp1_iMMptlkfYSOn7ngfxBaOm6NEd_Ro_T4Y9AyQ/exec';
+
+        // 3. Paste your real Client ID string here:
+        const GOOGLE_CLIENT_ID = "YOUR_OWN_GOOGLE_CLIENT_ID_HERE.apps.googleusercontent.com";
 
         function openPortal() {
             portalModal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
+            initializeGoogleSignIn();
         }
 
         function closePortal() {
@@ -158,11 +163,52 @@
             document.body.style.overflow = 'auto';
         }
 
-        function simulateGoogleLogin() {
-            const mockEmail = "client.demo@gmail.com";
-            document.getElementById('userEmail').value = mockEmail;
+        // 4. Added full system handler for real Google Sign-In
+        function initializeGoogleSignIn() {
+            if (GOOGLE_CLIENT_ID.startsWith("YOUR")) {
+                console.warn("Google Client ID not configured yet. Sandbox enabled.");
+                return;
+            }
+
+            google.accounts.id.initialize({
+                client_id: GOOGLE_CLIENT_ID,
+                callback: handleCredentialResponse
+            });
+
+            google.accounts.id.renderButton(
+                document.getElementById("googleBtnTarget"),
+                { theme: "outline", size: "large", width: 300 }
+            );
+        }
+
+        function handleCredentialResponse(response) {
+            const base64Url = response.credential.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            const googleProfile = JSON.parse(jsonPayload);
+
+            document.getElementById('userEmail').value = googleProfile.email;
+            document.getElementById('userName').value = googleProfile.name || "";
+
             loginStep.classList.add('hidden');
             assessmentForm.classList.remove('hidden');
+        }
+
+        // Sandbox safety engine so you can still preview locally
+        if (GOOGLE_CLIENT_ID.startsWith("YOUR")) {
+            document.getElementById('googleBtnTarget').innerHTML = `
+                <button onclick="mockAuth()" class="w-full flex items-center justify-center gap-4 bg-white text-slate-900 py-4 px-8 rounded-xl font-bold hover:bg-slate-200 transition">
+                    <img src="https://www.google.com/favicon.ico" class="w-5" alt="Google"> Sandbox Login (Click Me)
+                </button>`;
+        }
+
+        function mockAuth() {
+            handleCredentialResponse({
+                credential: "a.eyJuYW1lIjoiRGVtbyBDbGllbnQiLCJlbWFpbCI6ImNsaWVudC5kZW1vQGdtYWlsLmNvbSJ9.b"
+            });
         }
 
         // Phone number formatting logic
@@ -171,9 +217,7 @@
             e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
         });
 
-        // Dedicated Google Apps Script URL Target
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzZRyiIiZaAO8nFV3JNHtt0-J5jVhjp1_iMMptlkfYSOn7ngfxBaOm6NEd_Ro_T4Y9AyQ/exec';
-
+        // Direct AJAX Post to Google Sheets
         assessmentForm.addEventListener('submit', e => {
             e.preventDefault();
             
@@ -181,7 +225,6 @@
             submitBtn.innerText = "Processing...";
             submitBtn.disabled = true;
 
-            // Direct AJAX Post to Google Sheets
             fetch(scriptURL, { method: 'POST', body: new FormData(assessmentForm)})
                 .then(response => {
                     portalModal.classList.add('hidden');
